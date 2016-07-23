@@ -14,9 +14,9 @@ from kivy.uix.textinput import TextInput		#import a text-input for user input an
 
 """ This is a simple app that is created using kivy. Kivy is an open-source python library for repid development of application
 	that make use of innovating user interfaces and its also cross paltform.(https://kivy.org/docs/gettingstarted/intro.html)
-	This app is an A-z lyrics app. I calles it 'A-z lyrics app' because the lyrics are from http://www.azlyrics.com.
+	This app is an A-z lyrics app. I called it 'A-z lyrics app' because the lyrics are from http://www.azlyrics.com.
 	This app is for educational and desmostration purposes only. Please ask permission from azlyrics first before using 
-	their lyrics. Apart from that you can use modify this app for other personal usese."""
+	their lyrics. Apart from that you can use modify this app for other personal use."""
 
 
 class MyLyrics(App):

@@ -1,4 +1,4 @@
-# MyLyricsApp-azlyrics-
+# MyLyricsApp-azlyrics
 
 This is a simple cross platform simple to use __lyrics app__ built using **Kivy python library**. The lyrics that are shown
 on this app is crawled from azlyrics.com. This app is for demonstration purpose only.

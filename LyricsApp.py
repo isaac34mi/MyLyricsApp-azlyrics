@@ -20,57 +20,65 @@ from kivy.uix.textinput import TextInput		#import a text-input for user input an
 
 
 class MyLyrics(App):
+	#------build method-------
+	#	The purpose of the build function is to create the Layout and add the widgets as well.
+	#	For this project I am using BoxLayout with Vertical Oreintation 
+	# 
 	def build(self):
-		self.layout = BoxLayout(orientation='vertical')
+		self.layout = BoxLayout(orientation='vertical')	
 		self.layout.add_widget(Label(text='Please enter the song title',font_size='20sp',size_hint=(1, .2)))
-		self.song_title = TextInput(text="",multiline=False,size_hint=(1, .2))
-		self.layout.add_widget(self.song_title)
+		self.song_title_input = TextInput(text="",multiline=False,size_hint=(1, .2))
+		self.layout.add_widget(self.song_title_input)
 		self.layout.add_widget(Label(text='Please enter the song artist',font_size='20sp',size_hint=(1, .2)))
-		self.song_artist = TextInput(text="",multiline=False,size_hint=(1, .2))
-		self.layout.add_widget(self.song_artist)
+		self.song_artist_input = TextInput(text="",multiline=False,size_hint=(1, .2))
+		self.layout.add_widget(self.song_artist_input)
 		self.search = Button(text="Search Song",size_hint=(1, .2))
 		self.search.bind(on_press=self.result)
 		self.layout.add_widget(self.search)
-		
 		return self.layout
 
-#result Function to crawl the lyrics from the azlyrics website and remove the html tags from it using beautiful soup.
-	# and also to take spaces out of the song tile and song artist if there is any.
+	#-----result methodd-----
+	#	This method will crawl the lyrics from the azlyrics website and remove the html tags from it using beautiful soup.
+	# 	and also to take spaces out of the song tile and song artist if there is any.
 	def result(self,instance):
-		odd_words =["</br>","<br>","<div>","</div>","<i>","</i>"]
-		sa = str(self.song_artist.text).replace(" ","")
-		st = str(self.song_title.text).replace(" ","")
-		print (sa,st)
-		url= 'http://www.azlyrics.com/lyrics/' + str(sa) +'/' + str(st) + '.html'
+		odd_words = ["</br>","<br>","<div>","</div>","<i>","</i>"]
+		song_artist = str(self.song_artist_input.text).replace(" ","")
+		song_title = str(self.song_title_input.text).replace(" ","")
+		# print (sa,st)
+		url = 'http://www.azlyrics.com/lyrics/' + str(song_artist) +'/' + str(song_title) + '.html'
 
-##this error handling is important here becuase erros like Http 404 error can occur and that will make your app not function well it can even blow up(like quit/end)
+		#this error handling is important here becuase erros like Http 404 error can occur when the user enters non-existing
+		# artist and song title and that will make your app not function well.Its always good to check for errors
+		# even if it passes all tests.
 
 		try:
 			soup = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser")
-			ly=soup.find_all("div")
-			lyrics =(str(ly[22]))
-
+			raw_lyrics_html = soup.find_all("div")
+			lyrics = (str(raw_lyrics_html[22]))
+			
+			#this for loop will replace all html tags in the odd_word varaible with empty string.
 			for word in odd_words:
 				lyrics = lyrics.replace(str(word),"")
 
-			intro ="this is lyrics  is brought to you by 'azlyrics.com' Enjoy"
+			intro ="This lyrics is brought to you by 'azlyrics.com' Enjoy"
 			
-			self.song_result = TextInput(text=intro + "\n" + lyrics, multiline=True, height=70, size_hint=(1, 1))
+			self.song_result = TextInput(text = intro + "\n" + lyrics, multiline = True, height = 70, size_hint = (1, 1))
 			self.layout.add_widget(self.song_result)
-			self.clearResult =Button(text = "Clear Lyrics",size_hint=(1, 0.2))
-			self.clearResult.bind(on_press=self.removeWidget)
+			self.clearResult =Button(text = "Clear Lyrics",size_hint = (1, 0.2))
+			self.clearResult.bind(on_press = self.removeWidget)
 			self.layout.add_widget(self.clearResult)
 
 		except Exception:
-			self.song_result = TextInput(text="Not Found",multiline=True,height=70,size_hint=(1, 1))
+			self.song_result = TextInput(text = "There was no result for your search.\nPlease check spelling",\
+						     multiline = True,height = 70,size_hint = (1, 1))
 			self.layout.add_widget(self.song_result)
-			self.clearResult =Button(text = "Clear Lyrics",size_hint=(1, 0.2))
-			self.clearResult.bind(on_press=self.removeWidget)
+			self.clearResult = Button(text = "Clear Lyrics",size_hint = (1, 0.2))
+			self.clearResult.bind(on_press = self.removeWidget)
 			self.layout.add_widget(self.clearResult)
 
-	#this function will remove the clear button and the previous lyrics from 
+	#this method will remove the clear button and the previous lyrics from 
 	# the app after before a new result(lyrics) arrive.
-	def removeWidget(self,instance):
+	def remove_Widget(self,instance):
 		self.layout.remove_widget(self.song_result)
 		self.layout.remove_widget(self.clearResult)
 

@@ -11,5 +11,13 @@ To install kivy and its dependencies run the commmand below (assuming you have p
 ```bash
 pip install -r requirements.txt
 ```
+##Screenshot of before search and after search
+Before search:
+
+![alt text](/image/ui.png "before "search")
+
+After search:
+
+![alt text](/image/afterserach.png "after search")
 ##### If you find any bug or have a better way of implementing this app (using the kivy library). Please let me know.
 I love learning new and better ways :smile:
